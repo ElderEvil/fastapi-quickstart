@@ -148,7 +148,7 @@ Contributions are welcome! Feel free to **open an issue or pull request**.
 
 ### **Development Setup**
 ```bash
-git clone https://github.com/yourname/fastapi-quickstart.git
+git clone https://github.com/ElderEvil/fastapi-quickstart.git
 cd fastapi-quickstart
 uv pip install -e .[dev]
 ```
