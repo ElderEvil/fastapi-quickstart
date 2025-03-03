@@ -1,0 +1,93 @@
+[build-system]
+requires = ["uv"]
+build-backend = "uv"
+
+[project]
+name = "fastapi-quickstart"
+version = "0.1.0"
+description = "A package for rapid FastAPI development."
+authors = [
+    { name = "Dmytro Nedavnii", email = "nedavniid@gmail.com" }
+]
+license = { text = "MIT" }
+requires-python = "==3.12.*"
+dependencies = [
+    "alembic",
+    "fastapi[standard]",
+    "sqlmodel",
+    "pydantic-settings",
+]
+
+[dependency-groups]
+dev = [
+    "ruff",
+    "pytest",
+]
+
+[project.optional-dependencies]
+sqlite = ["aiosqlite"]
+postgres = ["asyncpg"]
+
+
+[tool.ruff]
+line-length = 120
+extend-exclude = ["__pycache__", ".pytest_cache", "alembic"]
+lint.select = [
+    "FAST", # fastapi
+    "YTT", # flake8-2020
+    "ASYNC", # flake8-async
+    "BLE", # flake8-blind-except
+    "FBT", # flake8-boolean-trap
+    "B", # flake8-bugbear
+    "A", # flake8-builtins
+    "COM", # flake8-commas
+    "C4", # flake8-comprehensions
+    "DTZ", # flake8-datetimez
+    "EM", # flake8-errmsg
+    "FA", # flake8-future-annotations
+    "INT", # flake8-gettext
+    "ISC", # flake8-implicit-str-concat
+    "ICN", # flake8-import-conventions
+    "LOG", # flake8-logging
+    "G", # flake8-logging-format
+    "INP", # flake8-no-pep420
+    "PIE", # flake8-pie
+    "F", # pyflakes
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "C90", # mccabe
+    "I", # isort
+    "N", # pep8-naming
+    "UP", # pyupgrade
+    "EM", # flake8-errmsg
+    "PYI", # flake8-pyi
+    "PT", # flake8-pytest-style
+    "Q", # flake8-quotes
+    "RSE", # flake8-raise
+    "RET", # flake8-return
+    "SIM", # flake8-simplify
+    "TID", # flake8-tidy-imports
+    "TCH", # flake8-type-checking
+    "ARG", # flake8-arguments
+    "PTH", # flake8-pathlib
+    "PGH", # pygrep-hooks
+    "PL", # Pylint
+    "TRY", # tryceratops
+    "RUF", # Ruff
+]
+
+lint.ignore = [
+    "COM812",
+    "ISC001",
+    "B008", # do not perform function calls in argument defaults
+    "PTH123", # builtin-open
+    "S311", # pseudo-random
+    "PLR2004",
+    "PT023", # pytest-style
+    "RUF012",
+    "N805", # self
+    "E712", # Avoid equality comparison
+]
+
+[tool.ruff.lint.flake8-builtins]
+builtins-ignorelist = ["id"]
