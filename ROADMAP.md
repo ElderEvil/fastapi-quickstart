@@ -25,11 +25,14 @@
 
 **Goal:** Make it safe, predictable, and pleasant to use
 
+**Status:** In progress
+
 ### Core
-- ⬜ Document BaseModel & BaseCRUD contracts
-- ⬜ Type-safety improvements (generics, bounds)
-- ⬜ Better error messages for misconfiguration
+- ✅ Document BaseModel & BaseCRUD contracts
+- ✅ Type-safety improvements (generics, bounds)
+- ✅ Better error messages for misconfiguration
 - ⬜ Explicit async/sync boundaries
+- ✅ Add get_or_create() to BaseCRUD
 
 ### CLI
 - ⬜ CLI command discovery cleanup
@@ -38,9 +41,9 @@
 - ⬜ Better help text & examples
 
 ### Testing
-- ⬜ Integration tests (SQLite + Postgres)
+- ✅ Integration tests (SQLite + Postgres)
 - ⬜ Migration test coverage
-- ⬜ CRUD behavior tests
+- ✅ CRUD behavior tests
 
 **Exit criteria:**
 - Confident minor releases

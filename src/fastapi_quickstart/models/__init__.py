@@ -1,6 +1,6 @@
 """Models and mixins for FastAPI Quickstart."""
 
-from src.fastapi_quickstart.models.mixins import (
+from fastapi_quickstart.models.mixins import (
     BaseIDModel,
     BaseUserMixin,
     BaseUUIDModel,

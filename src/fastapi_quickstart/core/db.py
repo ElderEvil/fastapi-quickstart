@@ -3,7 +3,7 @@ from collections.abc import AsyncGenerator
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from src.fastapi_quickstart.core.config import settings
+from fastapi_quickstart.core.config import settings
 
 DB_ECHO = settings.ENVIRONMENT == "development"  # Enable SQL logs in development
 

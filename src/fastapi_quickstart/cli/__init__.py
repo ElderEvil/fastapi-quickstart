@@ -1,6 +1,6 @@
 import typer
 
-from src.fastapi_quickstart.cli.migrations import migrations
+from fastapi_quickstart.cli.migrations import migrations
 
 app = typer.Typer(help="FastAPI Quickstart CLI")
 app.add_typer(migrations, name="migrate")

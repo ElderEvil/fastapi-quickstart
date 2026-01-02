@@ -54,7 +54,7 @@ from sqlalchemy.sql import func
 from sqlmodel import SQLModel, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from src.fastapi_quickstart.utils.exceptions import ResourceAlreadyExistsException, ResourceNotFoundException
+from fastapi_quickstart.utils.exceptions import ResourceAlreadyExistsException, ResourceNotFoundException
 
 ModelType = TypeVar("ModelType", bound=SQLModel)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=SQLModel)
