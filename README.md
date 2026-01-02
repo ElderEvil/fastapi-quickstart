@@ -22,19 +22,19 @@ uv pip install fastapi-quickstart
 ### 2️⃣ **Install optional database dependencies**
 ```bash
 # For SQLite support
-uv pip install fastapi-quickstart[sqlite]
+uv add fastapi-quickstart[sqlite]
 
 # For PostgreSQL (asyncpg) support
-uv pip install fastapi-quickstart[postgres]
+uv add fastapi-quickstart[postgres]
 ```
 
 ---
 
 ## 🚀 Quickstart Guide
 
-### 1️⃣ **Initialize a new FastAPI project**
+### 1️⃣ **Initialize a new FastAPI project with uv**
 ```bash
-fastapi-quickstart init myproject
+uv init myproject
 cd myproject
 ```
 
@@ -62,7 +62,7 @@ fastapi-quickstart migrate upgrade
 
 ### 4️⃣ **Start your FastAPI app**
 ```bash
-uvicorn app.main:app --reload
+fastapi dev path/to/main.py
 ```
 
 ---
@@ -79,7 +79,7 @@ FastAPI Quickstart **automatically detects your database type** based on the `.e
 The `ASYNC_DATABASE_URI` is automatically generated based on `.env` settings:
 ```python
 from fastapi_quickstart.core.config import settings
-print(settings.database_url)  # Outputs the full database URL
+print(settings.ASYNC_DATABASE_URI)  # Outputs the full database URL
 ```
 
 ---
@@ -135,9 +135,10 @@ fastapi-quickstart --help
 pytest tests/
 ```
 
-### **Check code style with `ruff`**
+### **Check code style/format with `ruff`**
 ```bash
 ruff check .
+ruff format
 ```
 
 ---
@@ -150,7 +151,7 @@ Contributions are welcome! Feel free to **open an issue or pull request**.
 ```bash
 git clone https://github.com/ElderEvil/fastapi-quickstart.git
 cd fastapi-quickstart
-uv pip install -e .[dev]
+uv sync -e .[dev]
 ```
 
 ### **Run tests**
@@ -161,7 +162,7 @@ pytest
 ---
 
 ## 📜 License
-MIT License © 2024 FastAPI Quickstart
+MIT License © 2025 FastAPI Quickstart
 
 ---
 

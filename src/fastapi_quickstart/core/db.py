@@ -9,7 +9,7 @@ DB_ECHO = settings.ENVIRONMENT == "development"  # Enable SQL logs in developmen
 
 if settings.DB_TYPE == "postgres":
     async_engine = create_async_engine(
-        str(settings.database_url),
+        str(settings.ASYNC_DATABASE_URI),
         echo=DB_ECHO,
         future=True,
         pool_size=settings.DB_POOL_SIZE,
@@ -17,7 +17,7 @@ if settings.DB_TYPE == "postgres":
     )
 elif settings.DB_TYPE == "sqlite":
     async_engine = create_async_engine(
-        str(settings.database_url),
+        str(settings.ASYNC_DATABASE_URI),
         echo=DB_ECHO,
         future=True,
         connect_args={"check_same_thread": False},

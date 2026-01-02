@@ -1,20 +1,20 @@
 [build-system]
-requires = ["uv"]
-build-backend = "uv"
+requires = ["setuptools >= 75.0"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "fastapi-quickstart"
 version = "0.1.0"
 description = "A package for rapid FastAPI development."
 authors = [
-    { name = "Dmytro Nedavnii", email = "nedavniid@gmail.com" }
+    { name = "Dmytro Nedavnii", email = "d.nedavniid@proton.me" }
 ]
 license = { text = "MIT" }
-requires-python = "==3.12.*"
+requires-python = ">=3.12,<3.14"
 dependencies = [
     "alembic",
-    "fastapi[standard]",
-    "sqlmodel",
+    "fastapi[standard]==0.128.0",
+    "sqlmodel==0.0.31",
     "pydantic-settings",
 ]
 
@@ -22,58 +22,61 @@ dependencies = [
 dev = [
     "ruff",
     "pytest",
+    "pytest-asyncio",
+    "aiosqlite",
 ]
 
 [project.optional-dependencies]
 sqlite = ["aiosqlite"]
 postgres = ["asyncpg"]
 
+[project.scripts]
+fastapi-quickstart = "fastapi_quickstart.cli:app"
 
 [tool.ruff]
 line-length = 120
 extend-exclude = ["__pycache__", ".pytest_cache", "alembic"]
 lint.select = [
-    "FAST", # fastapi
-    "YTT", # flake8-2020
-    "ASYNC", # flake8-async
-    "BLE", # flake8-blind-except
-    "FBT", # flake8-boolean-trap
-    "B", # flake8-bugbear
-    "A", # flake8-builtins
-    "COM", # flake8-commas
-    "C4", # flake8-comprehensions
-    "DTZ", # flake8-datetimez
-    "EM", # flake8-errmsg
-    "FA", # flake8-future-annotations
-    "INT", # flake8-gettext
-    "ISC", # flake8-implicit-str-concat
-    "ICN", # flake8-import-conventions
-    "LOG", # flake8-logging
-    "G", # flake8-logging-format
-    "INP", # flake8-no-pep420
-    "PIE", # flake8-pie
-    "F", # pyflakes
-    "E", # pycodestyle errors
-    "W", # pycodestyle warnings
-    "C90", # mccabe
-    "I", # isort
-    "N", # pep8-naming
-    "UP", # pyupgrade
-    "EM", # flake8-errmsg
-    "PYI", # flake8-pyi
-    "PT", # flake8-pytest-style
-    "Q", # flake8-quotes
-    "RSE", # flake8-raise
-    "RET", # flake8-return
-    "SIM", # flake8-simplify
-    "TID", # flake8-tidy-imports
-    "TCH", # flake8-type-checking
-    "ARG", # flake8-arguments
-    "PTH", # flake8-pathlib
-    "PGH", # pygrep-hooks
-    "PL", # Pylint
-    "TRY", # tryceratops
-    "RUF", # Ruff
+    "FAST",
+    "YTT",
+    "ASYNC",
+    "BLE",
+    "FBT",
+    "B",
+    "A",
+    "COM",
+    "C4",
+    "EM",
+    "FA",
+    "INT",
+    "ISC",
+    "ICN",
+    "LOG",
+    "G",
+    "INP",
+    "PIE",
+    "F",
+    "E",
+    "W",
+    "C90",
+    "I",
+    "N",
+    "UP",
+    "EM",
+    "PYI",
+    "PT",
+    "Q",
+    "RSE",
+    "RET",
+    "SIM",
+    "TID",
+    "TCH",
+    "ARG",
+    "PTH",
+    "PGH",
+    "PL",
+    "TRY",
+    "RUF",
 ]
 
 lint.ignore = [
@@ -87,6 +90,7 @@ lint.ignore = [
     "RUF012",
     "N805", # self
     "E712", # Avoid equality comparison
+    "RUF022", # Allow unsorted __all__ for grouped exports
 ]
 
 [tool.ruff.lint.flake8-builtins]

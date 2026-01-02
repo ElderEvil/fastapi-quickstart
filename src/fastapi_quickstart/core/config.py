@@ -1,6 +1,6 @@
-from typing import Any, Literal
+from typing import Literal
 
-from pydantic import PostgresDsn, field_validator
+from pydantic import PostgresDsn, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -26,21 +26,21 @@ class Settings(BaseSettings):
     MAX_OVERFLOW: int = 64
 
     @field_validator("ASYNC_DATABASE_URI", mode="after")
-    def assemble_db_connection(cls, v: str | None, values: dict[str, Any]) -> str:
+    def assemble_db_connection(cls, v: str | None, info: ValidationInfo) -> str:
         """
         Automatically builds the async Postgres connection string if ASYNC_DATABASE_URI is not set.
         """
-        if v is None and values.get("DB_TYPE") == "postgres":
+        if v is None and info.data.get("DB_TYPE") == "postgres":
             return str(
                 PostgresDsn.build(
                     scheme="postgresql+asyncpg",
-                    username=values["DB_USER"],
-                    password=values["DB_PASSWORD"],
-                    host=values["DB_HOST"],
-                    path=f"/{values['DB_NAME']}",  # Postgres path must start with '/'
+                    username=info.data["DB_USER"],
+                    password=info.data["DB_PASSWORD"],
+                    host=info.data["DB_HOST"],
+                    path=f"/{info.data['DB_NAME']}",  # Postgres path must start with '/'
                 )
             )
-        return v or f"sqlite+aiosqlite:///{values['DB_NAME']}"
+        return v or f"sqlite+aiosqlite:///{info.data['DB_NAME']}"
 
     @property
     def pool_size(self) -> int:
