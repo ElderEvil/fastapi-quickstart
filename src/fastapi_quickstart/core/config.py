@@ -14,33 +14,40 @@ class Settings(BaseSettings):
 
     ENVIRONMENT: Literal["development", "production"] = "development"
 
-    ASYNC_DATABASE_URI: PostgresDsn | str = ""
     DB_TYPE: Literal["sqlite", "postgres"] = "sqlite"
     DB_NAME: str = "app.db"
     DB_USER: str = "user"
     DB_PASSWORD: str = "changeme"
     DB_HOST: str = "localhost"
+    ASYNC_DATABASE_URI: PostgresDsn | str = ""
 
     DB_POOL_SIZE: int = 83
     WEB_CONCURRENCY: int = 9
     MAX_OVERFLOW: int = 64
 
-    @field_validator("ASYNC_DATABASE_URI", mode="after")
+    @field_validator("ASYNC_DATABASE_URI", mode="before")
+    @classmethod
     def assemble_db_connection(cls, v: str | None, info: ValidationInfo) -> str:
         """
         Automatically builds the async Postgres connection string if ASYNC_DATABASE_URI is not set.
         """
-        if v is None and info.data.get("DB_TYPE") == "postgres":
+        if v:
+            return v
+
+        db_type = info.data.get("DB_TYPE", "sqlite")
+        db_name = info.data.get("DB_NAME", "app.db")
+
+        if db_type == "postgres":
             return str(
                 PostgresDsn.build(
                     scheme="postgresql+asyncpg",
-                    username=info.data["DB_USER"],
-                    password=info.data["DB_PASSWORD"],
-                    host=info.data["DB_HOST"],
-                    path=f"/{info.data['DB_NAME']}",  # Postgres path must start with '/'
+                    username=info.data.get("DB_USER", "user"),
+                    password=info.data.get("DB_PASSWORD", "changeme"),
+                    host=info.data.get("DB_HOST", "localhost"),
+                    path=f"/{db_name}",
                 )
             )
-        return v or f"sqlite+aiosqlite:///{info.data['DB_NAME']}"
+        return f"sqlite+aiosqlite:///{db_name}"
 
     @property
     def pool_size(self) -> int:

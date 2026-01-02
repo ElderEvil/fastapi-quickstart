@@ -38,7 +38,14 @@ class TestProduct(BaseIDModel, TimestampMixin, SoftDeleteMixin, table=True):  # 
     price: float
 
 
-product_crud = CRUDBase[TestProduct, TestProduct, TestProduct](model=TestProduct)
+class TestProductCreate(SQLModel):
+    """Schema for creating test products."""
+
+    name: str
+    price: float
+
+
+product_crud = CRUDBase[TestProduct, TestProductCreate, TestProduct](model=TestProduct)
 
 
 @pytest.mark.asyncio
@@ -172,7 +179,7 @@ async def test_delete_nonexistent_user(async_session):
 @pytest.mark.asyncio
 async def test_soft_delete_product(async_session):
     """Test soft deleting a product."""
-    product_data = TestProduct(name="Test Product", price=99.99)
+    product_data = TestProductCreate(name="Test Product", price=99.99)
     created_product = await product_crud.create(async_session, product_data)
 
     result = await product_crud.delete(async_session, created_product.id, soft_delete=True)
@@ -182,3 +189,41 @@ async def test_soft_delete_product(async_session):
     soft_deleted_product = await product_crud.get(async_session, created_product.id)
     assert soft_deleted_product.is_deleted is True
     assert soft_deleted_product.deleted_at is not None
+
+
+@pytest.mark.asyncio
+async def test_get_or_create_new_user(async_session):
+    """Test get_or_create when user doesn't exist."""
+    user_data = TestUserCreate(name="New User", email="new@example.com")
+    user, created = await user_crud.get_or_create(async_session, user_data, email="new@example.com")
+
+    assert created is True
+    assert user.id is not None
+    assert user.name == "New User"
+    assert user.email == "new@example.com"
+
+
+@pytest.mark.asyncio
+async def test_get_or_create_existing_user(async_session):
+    """Test get_or_create when user already exists."""
+    # Create a user first
+    user_data = TestUserCreate(name="Existing User", email="existing@example.com")
+    existing_user = await user_crud.create(async_session, user_data)
+
+    # Try to get_or_create with same email
+    new_data = TestUserCreate(name="Different Name", email="existing@example.com")
+    user, created = await user_crud.get_or_create(async_session, new_data, email="existing@example.com")
+
+    assert created is False
+    assert user.id == existing_user.id
+    assert user.name == "Existing User"  # Should keep original name
+    assert user.email == "existing@example.com"
+
+
+@pytest.mark.asyncio
+async def test_get_or_create_no_filters(async_session):
+    """Test get_or_create raises error when no filters provided."""
+    user_data = TestUserCreate(name="Test User", email="test@example.com")
+
+    with pytest.raises(ValueError, match="At least one filter must be provided"):
+        await user_crud.get_or_create(async_session, user_data)
